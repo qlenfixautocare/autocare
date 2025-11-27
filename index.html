@@ -12,11 +12,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
-    /*
-      COLOR PALETTE INSPIRED BY SCREENSHOT:
-      - Dark Background: #071016 (Existing)
-      - App Accent/KPI Green: #42FF42 (Using a vibrant green)
-    */
     :root {
       --bg-0: #101c31;
       --bg-1: linear-gradient(to bottom, #132747 0%, #101c31 100%);
@@ -41,32 +36,28 @@
       font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
       background: linear-gradient(to bottom, #132747, #0c1524);
       background-attachment: fixed;
-      /* KEY: keeps gradient anchored while scrolling */
       color: var(--dim);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       padding: 36px 18px;
       line-height: 1.55;
       min-height: 100%;
+      overflow: auto;
     }
 
+    @media (min-width:1001px) {
+      body {
+        overflow: hidden
+      }
+
+      /* desktop: keep layout fixed, right column scrolls */
+    }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0
     }
-
-
-
-    /* DESKTOP-ONLY OVERFLOW CONTROL */
-    @media (min-width: 1001px) {
-      body {
-        overflow: hidden;
-        /* Restricts body scroll on desktop */
-      }
-    }
-
 
     .container {
       max-width: var(--max-width);
@@ -78,7 +69,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 28px;
+      margin-bottom: 28px
     }
 
     .brand {
@@ -88,7 +79,6 @@
 
     .brand .title {
       font-family: 'Montserrat', sans-serif;
-      /* Use bright green for brand title */
       color: var(--accent);
       font-weight: 700;
       font-size: 1.3rem
@@ -108,7 +98,6 @@
       font-weight: 700;
       text-decoration: none;
       color: var(--bg-0);
-      /* Adjusted gradient to use the new green */
       background: linear-gradient(180deg, var(--accent), var(--accent-secondary));
       border: none;
       box-shadow: var(--btn-shadow);
@@ -123,7 +112,7 @@
       color: var(--dim);
       box-shadow: none;
       font-weight: 600;
-      text-decoration: none;
+      text-decoration: none
     }
 
     .main {
@@ -131,13 +120,12 @@
       grid-template-columns: 420px 1fr;
       gap: 32px;
       align-items: start;
-      /* Removed fixed height on mobile in media query below */
       height: calc(100vh - var(--header-space) - var(--footer-space));
       min-height: 420px;
       margin-bottom: 18px;
     }
 
-    /* LEFT: phone — keep visually centered/anchored */
+    /* LEFT: sticky phone */
     .phone-box {
       display: flex;
       flex-direction: column;
@@ -156,36 +144,33 @@
       border-radius: 14px;
       border: 1px solid var(--glass-border);
       box-shadow: var(--image-shadow);
-      display: block;
+      display: block
     }
 
-    /* RIGHT: content scrolls inside its column on desktop */
+    /* RIGHT: scrollable content column */
     .content {
       padding: 0 0 6px 0;
       background: transparent;
       border-radius: var(--radius);
       height: 100%;
-      overflow: hidden;
+      overflow: hidden
     }
 
     .content-inner {
       padding: 22px;
       height: 100%;
       overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
+      -webkit-overflow-scrolling: touch
     }
 
-    /* Hide native scrollbars but keep scroll functionality */
     .content-inner::-webkit-scrollbar {
       width: 0;
-      height: 0;
+      height: 0
     }
 
     .content-inner {
       scrollbar-width: none;
-      /* Firefox */
-      -ms-overflow-style: none;
-      /* IE 10+ */
+      -ms-overflow-style: none
     }
 
     .eyebrow {
@@ -226,7 +211,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      /* Use bright green for feature icons */
       color: var(--accent);
       font-size: 18px
     }
@@ -243,16 +227,11 @@
       font-size: 0.95rem
     }
 
-    /* Accordion styles */
+    /* Accordion: closed-by-default preview + fade */
     .accordion {
       border-top: 1px solid var(--glass-border);
-      margin-top: 18px
-    }
-
-    .accordion.open .accordion-header i.fa-chevron-down {
-      transform: rotate(180deg);
-      /* Use bright green for open accordion icon */
-      color: var(--accent);
+      margin-top: 18px;
+      position: relative
     }
 
     .accordion-header {
@@ -263,45 +242,74 @@
       cursor: pointer;
       font-family: 'Montserrat', sans-serif;
       font-size: 1.05rem;
-      color: #fff;
+      color: #fff
     }
 
     .accordion-header i {
-      transition: transform 0.3s ease;
+      transition: transform .32s ease, color .25s ease
     }
 
     .accordion-header:hover {
-      /* Use bright green for hover state */
-      color: var(--accent);
-    }
-
-    .accordion-header:hover i {
-      /* Ensure icon also gets the color on hover */
-      color: var(--accent);
+      color: var(--accent)
     }
 
     .accordion-preview {
       font-size: 0.88rem;
       color: rgba(255, 255, 255, 0.6);
-      margin-top: 2px;
+      margin-top: 2px
     }
 
+    /* Preview container shows only the first child; when open, show all */
     .accordion-content {
-      max-height: 0;
+      max-height: 120px;
+      /* preview height that fits first child title+desc */
       overflow: hidden;
-      opacity: 0;
-      transition: all 0.45s cubic-bezier(.2, .9, .2, 1);
+      position: relative;
+      transition: max-height .45s cubic-bezier(.2, .9, .2, 1), opacity .35s ease;
+      opacity: 1;
     }
 
     .accordion-content.open {
-      max-height: 1600px;
-      opacity: 1;
+      max-height: 1600px
+    }
+
+    /* In preview: hide everything except first child; ensure first child displays fully */
+    .accordion-content:not(.open) .feature {
+      display: none
+    }
+
+    .accordion-content:not(.open) .feature:first-child {
+      display: flex;
+      opacity: .98
+    }
+
+    /* Fade overlay to hint more content */
+    .accordion-content:not(.open)::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 48px;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(8, 9, 22, 0) 0%, rgba(20, 22, 51, 0) 100%);
+      border-bottom-left-radius: var(--radius);
+      border-bottom-right-radius: var(--radius);
+    }
+
+    .accordion-content.open::after {
+      display: none
+    }
+
+    /* When fully open, make sure all features are visible in their normal layout */
+    .accordion-content.open .feature {
+      display: flex
     }
 
     .fade {
       background: rgba(8, 9, 22, 0.03);
       border-radius: var(--radius);
-      padding: 12px 14px;
+      padding: 12px 14px
     }
 
     footer {
@@ -315,39 +323,33 @@
       .main {
         grid-template-columns: 1fr;
         gap: 18px;
-        /* FIX: Allow main to size naturally */
-        height: auto;
+        height: auto
       }
 
-      /* ADJUSTMENT FOR MOBILE: Swap image and content order */
       .phone-box {
         position: static;
-        order: 0;
+        order: 0
       }
 
       .content {
         order: 2;
-        /* FIX: Remove height/overflow constraints on mobile */
         height: auto;
-        overflow: visible;
+        overflow: visible
       }
 
       .content-inner {
-        /* FIX: Remove height/overflow constraints on mobile */
         height: auto;
         overflow: visible;
-        max-height: none;
+        max-height: none
       }
     }
 
-    @media (max-width: 1000px) {
+    @media (max-width:1000px) {
       body {
         background-size: cover;
-        /* prevents tiling/edges */
-        background-position: top;
+        background-position: top
       }
     }
-
 
     @media (max-width:480px) {
       body {
@@ -367,26 +369,9 @@
       }
     }
 
-    .promo-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      cursor: pointer;
-    }
-
-    .footer-brand {
-      margin-top: 28px;
-      padding-top: 18px;
-      text-align: center;
-      font-size: 0.92rem;
-      color: rgba(255, 255, 255, 0.55);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      letter-spacing: 0.3px;
-      user-select: none;
-    }
-
+    /* Playstore badge (keeps transparent background) */
     .playstore-btn {
-      text-decoration: none;
+      text-decoration: none
     }
 
     .playstore-badge {
@@ -394,7 +379,6 @@
       align-items: center;
       gap: 12px;
       padding: 10px 24px;
-      /* increase width */
       border: 2px solid var(--accent);
       border-radius: 12px;
       color: var(--accent);
@@ -403,34 +387,35 @@
       font-size: 1rem;
       background: transparent;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all .2s ease;
     }
 
     .playstore-badge:hover {
-      background: rgba(66, 255, 66, 0.1);
+      background: rgba(66, 255, 66, 0.08)
     }
 
     .playstore-badge i {
-      font-size: 2rem;
+      font-size: 2rem
     }
 
     .badge-text {
       display: flex;
       flex-direction: column;
-      line-height: 1.1;
+      line-height: 1.1
     }
 
     .small-text {
-      font-size: 0.7rem;
+      font-size: .7rem;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: .5px
     }
 
     .large-text {
       font-size: 1.1rem;
-      font-weight: 900;
+      font-weight: 900
     }
   </style>
+
 </head>
 
 <body>
@@ -538,7 +523,7 @@
               <div class="accordion-header" onclick="toggleAccordion(this)">
                 <div>
                   <i class="fa-solid fa-shield-halved accordion-icon"></i>
-                  Privacy & Terms — Key Points
+                  Privacy & Terms
                   <div class="accordion-preview">
                     Data Collected | Purpose | Sharing | Control
                   </div>
@@ -607,60 +592,55 @@
   </div>
 
   <script>
-    // Single toggleAccordion function for both accordions.
+    // Close all accordions on load and set preview state
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.accordion').forEach(acc => {
+        const content = acc.querySelector('.accordion-content');
+        const chevron = acc.querySelector('.accordion-header i.fa-chevron-down');
+
+        // ensure closed state
+        if (content) content.classList.remove('open');
+        acc.classList.remove('open');
+
+        // reset chevron
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+      });
+    });
+
     function toggleAccordion(header) {
       const accordion = header.closest('.accordion');
       const content = header.nextElementSibling;
       const icon = header.querySelector('i.fa-chevron-down');
 
-      // Toggle the content open/closed
+      // If the clicked accordion will open, close others first (accordion group behavior)
       const willOpen = !content.classList.contains('open');
 
-      if (willOpen) {
-        // Close all other accordions
-        document.querySelectorAll('.accordion').forEach(acc => {
-          if (acc !== accordion) {
-            acc.classList.remove('open');
-            acc.querySelector('.accordion-content').classList.remove('open');
-            // Check for the icon before manipulating its style
-            const otherIcon = acc.querySelector('i.fa-chevron-down');
-            if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
-          }
-        });
+      document.querySelectorAll('.accordion').forEach(acc => {
+        const c = acc.querySelector('.accordion-content');
+        const ic = acc.querySelector('.accordion-header i.fa-chevron-down');
 
-        // Open the current accordion
+        if (acc === accordion) return; // skip the one we're toggling
+
+        if (c && c.classList.contains('open')) {
+          c.classList.remove('open');
+          acc.classList.remove('open');
+          if (ic) ic.style.transform = 'rotate(0deg)';
+        }
+      });
+
+      // Toggle clicked accordion
+      if (willOpen) {
         content.classList.add('open');
         accordion.classList.add('open');
-        if (icon) {
-          icon.style.transform = 'rotate(180deg)';
-        }
+        if (icon) icon.style.transform = 'rotate(180deg)';
       } else {
         content.classList.remove('open');
         accordion.classList.remove('open');
         if (icon) icon.style.transform = 'rotate(0deg)';
       }
     }
-
-    // Ensure Features accordion is open on load (defensive)
-    (function ensureDefaultOpen() {
-      try {
-        const firstAccordion = document.querySelector('.accordion-container .accordion');
-        if (firstAccordion) {
-          const header = firstAccordion.querySelector('.accordion-header');
-          const content = firstAccordion.querySelector('.accordion-content');
-          const icon = header.querySelector('i.fa-chevron-down');
-          if (content && !content.classList.contains('open')) {
-            content.classList.add('open');
-            firstAccordion.classList.add('open');
-            if (icon) icon.style.transform = 'rotate(180deg)';
-          }
-        }
-      } catch (e) {
-        // silent fail - doesn't break UI
-        console.warn(e);
-      }
-    })();
   </script>
+
 </body>
 
 </html>

@@ -57,14 +57,16 @@
       /* FIX: Removing this line and moving it inside the media query 
          for desktop-only overflow control will make the page scrollable on mobile.
       */
-      overflow: auto; /* Changed from hidden to auto/scroll */
+      overflow: auto;
+      /* Changed from hidden to auto/scroll */
     }
-    
+
     /* DESKTOP-ONLY OVERFLOW CONTROL */
     @media (min-width: 1001px) {
-        body {
-            overflow: hidden; /* Restricts body scroll on desktop */
-        }
+      body {
+        overflow: hidden;
+        /* Restricts body scroll on desktop */
+      }
     }
 
 
@@ -318,7 +320,7 @@
         grid-template-columns: 1fr;
         gap: 18px;
         /* FIX: Allow main to size naturally */
-        height: auto; 
+        height: auto;
       }
 
       /* ADJUSTMENT FOR MOBILE: Swap image and content order */
@@ -336,7 +338,7 @@
 
       .content-inner {
         /* FIX: Remove height/overflow constraints on mobile */
-        height: auto; 
+        height: auto;
         overflow: visible;
         max-height: none;
       }
@@ -366,6 +368,17 @@
       display: block;
       cursor: pointer;
     }
+
+    .footer-brand {
+      margin-top: 28px;
+      padding-top: 18px;
+      text-align: center;
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.55);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      letter-spacing: 0.3px;
+      user-select: none;
+    }
   </style>
 </head>
 
@@ -373,7 +386,7 @@
   <div class="container">
     <header>
       <div class="brand">
-        </div>
+      </div>
     </header>
 
     <main class="main" role="main">
@@ -382,7 +395,7 @@
           <img src="bg.png" alt="Qlenfix app screenshot on phone" class="promo-image">
         </a>
 
-        <div>&copy; 2025 Qlenfix Autocare — Built for trust & clarity.</div>
+
       </aside>
 
       <article class="content" aria-labelledby="features-title">
@@ -511,15 +524,21 @@
                       </p>
                     </div>
                   </div>
+                  <div class="footer-brand">&copy; 2025 Qlenfix Autocare — Built for trust
+                    &
+                    clarity.</div>
 
                 </div>
               </div>
             </div>
 
           </div>
-        </div> </article>
+        </div>
+
+      </article>
 
     </main>
+
   </div>
 
   <script>
@@ -548,7 +567,7 @@
         content.classList.add('open');
         accordion.classList.add('open');
         if (icon) {
-            icon.style.transform = 'rotate(180deg)';
+          icon.style.transform = 'rotate(180deg)';
         }
       } else {
         content.classList.remove('open');

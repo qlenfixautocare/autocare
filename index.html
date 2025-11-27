@@ -54,8 +54,19 @@
       -moz-osx-font-smoothing: grayscale;
       padding: 36px 18px;
       line-height: 1.55;
-      overflow: hidden;
+      /* FIX: Removing this line and moving it inside the media query 
+         for desktop-only overflow control will make the page scrollable on mobile.
+      */
+      overflow: auto; /* Changed from hidden to auto/scroll */
     }
+    
+    /* DESKTOP-ONLY OVERFLOW CONTROL */
+    @media (min-width: 1001px) {
+        body {
+            overflow: hidden; /* Restricts body scroll on desktop */
+        }
+    }
+
 
     .container {
       max-width: var(--max-width);
@@ -120,6 +131,7 @@
       grid-template-columns: 420px 1fr;
       gap: 32px;
       align-items: start;
+      /* Removed fixed height on mobile in media query below */
       height: calc(100vh - var(--header-space) - var(--footer-space));
       min-height: 420px;
       margin-bottom: 18px;
@@ -147,17 +159,19 @@
       display: block;
     }
 
-    /* RIGHT: content scrolls inside its column */
+    /* RIGHT: content scrolls inside its column on desktop */
     .content {
       padding: 0 0 6px 0;
       background: transparent;
       border-radius: var(--radius);
+      /* FIX: Removing height/overflow here to allow natural sizing on mobile */
       height: 100%;
       overflow: hidden;
     }
 
     .content-inner {
       padding: 22px;
+      /* FIX: Removing max height here to allow natural sizing on mobile */
       height: 100%;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
@@ -303,24 +317,28 @@
       .main {
         grid-template-columns: 1fr;
         gap: 18px;
-        height: auto;
+        /* FIX: Allow main to size naturally */
+        height: auto; 
       }
 
       /* ADJUSTMENT FOR MOBILE: Swap image and content order */
-      /* Phone Box (Image) will now be first (order: 0) */
       .phone-box {
         position: static;
         order: 0;
       }
 
-      /* Content will now be second (order: 2) */
       .content {
         order: 2;
+        /* FIX: Remove height/overflow constraints on mobile */
+        height: auto;
+        overflow: visible;
       }
 
       .content-inner {
-        max-height: none;
+        /* FIX: Remove height/overflow constraints on mobile */
+        height: auto; 
         overflow: visible;
+        max-height: none;
       }
     }
 
@@ -355,7 +373,7 @@
   <div class="container">
     <header>
       <div class="brand">
-      </div>
+        </div>
     </header>
 
     <main class="main" role="main">
@@ -499,8 +517,7 @@
             </div>
 
           </div>
-        </div>
-      </article>
+        </div> </article>
 
     </main>
   </div>
@@ -531,7 +548,7 @@
         content.classList.add('open');
         accordion.classList.add('open');
         if (icon) {
-          icon.style.transform = 'rotate(180deg)';
+            icon.style.transform = 'rotate(180deg)';
         }
       } else {
         content.classList.remove('open');

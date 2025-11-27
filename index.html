@@ -6,27 +6,33 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Qlenfix Autocare — Modern Vehicle Diagnostics</title>
 
-  <!-- Fonts & icons -->
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@300;400;600&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
+    /*
+      COLOR PALETTE INSPIRED BY SCREENSHOT:
+      - Dark Background: #071016 (Existing)
+      - App Accent/KPI Green: #42FF42 (Using a vibrant green)
+    */
     :root {
       --bg-0: #071016;
       --bg-1: linear-gradient(180deg, #071016 0%, #08121a 100%);
       --dim: rgba(255, 255, 255, 0.68);
-      --accent: #3498db;
+      /* Changed accent color to vibrant green */
+      --accent: #42FF42;
+      /* Adjusted secondary accent for buttons/hover to a slightly less neon green */
+      --accent-secondary: #00e000;
       --glass-border: rgba(255, 255, 255, 0.04);
       --radius: 12px;
       --max-width: 1100px;
-      --btn-shadow: 0 10px 24px rgba(52, 152, 219, 0.12);
+      /* Adjusted button shadow to use the new green accent */
+      --btn-shadow: 0 10px 24px rgba(66, 255, 66, 0.18);
       --image-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
       --header-space: 120px;
-      /* approximate space for header + margins (used to size main) */
       --footer-space: 64px;
-      /* approximate footer space */
     }
 
     * {
@@ -48,7 +54,6 @@
       -moz-osx-font-smoothing: grayscale;
       padding: 36px 18px;
       line-height: 1.55;
-      /* hide page-level overflow on body to keep all vertical scrolling inside the content column */
       overflow: hidden;
     }
 
@@ -63,7 +68,6 @@
       justify-content: space-between;
       gap: 12px;
       margin-bottom: 28px;
-      /* keep header visible and outside of the scrolling content */
     }
 
     .brand {
@@ -73,6 +77,7 @@
 
     .brand .title {
       font-family: 'Montserrat', sans-serif;
+      /* Use bright green for brand title */
       color: var(--accent);
       font-weight: 700;
       font-size: 1.3rem
@@ -91,8 +96,9 @@
       border-radius: 10px;
       font-weight: 700;
       text-decoration: none;
-      color: #061018;
-      background: linear-gradient(180deg, var(--accent), #2a86bf);
+      color: var(--bg-0);
+      /* Adjusted gradient to use the new green */
+      background: linear-gradient(180deg, var(--accent), var(--accent-secondary));
       border: none;
       box-shadow: var(--btn-shadow);
       cursor: pointer;
@@ -109,19 +115,12 @@
       text-decoration: none;
     }
 
-    /*
-      Main layout:
-        - fill available viewport height minus header/footer (approx)
-        - left: image (sticky/centered)
-        - right: scrollable content
-    */
     .main {
       display: grid;
       grid-template-columns: 420px 1fr;
       gap: 32px;
       align-items: start;
       height: calc(100vh - var(--header-space) - var(--footer-space));
-      /* main viewport area */
       min-height: 420px;
       margin-bottom: 18px;
     }
@@ -133,10 +132,8 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
-      /* make sticky so it stays in view while the right column scrolls */
       position: sticky;
       top: calc(36px + 16px);
-      /* sticky offset: page padding + small offset */
       align-self: center;
       height: fit-content;
     }
@@ -157,8 +154,6 @@
       border-radius: var(--radius);
       height: 100%;
       overflow: hidden;
-      /* container hides external scrollbars */
-      /* inner scroll area (content-scroll) will handle scrolling */
     }
 
     .content-inner {
@@ -219,6 +214,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      /* Use bright green for feature icons */
       color: var(--accent);
       font-size: 18px
     }
@@ -243,6 +239,8 @@
 
     .accordion.open .accordion-header i.fa-chevron-down {
       transform: rotate(180deg);
+      /* Use bright green for open accordion icon */
+      color: var(--accent);
     }
 
     .accordion-header {
@@ -261,6 +259,12 @@
     }
 
     .accordion-header:hover {
+      /* Use bright green for hover state */
+      color: var(--accent);
+    }
+
+    .accordion-header:hover i {
+      /* Ensure icon also gets the color on hover */
       color: var(--accent);
     }
 
@@ -279,7 +283,6 @@
 
     .accordion-content.open {
       max-height: 1600px;
-      /* enough to hold content */
       opacity: 1;
     }
 
@@ -287,24 +290,6 @@
       background: rgba(255, 255, 255, 0.03);
       border-radius: var(--radius);
       padding: 12px 14px;
-    }
-
-    .privacy-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px
-    }
-
-    .privacy-item {
-      font-size: 0.92rem;
-      color: var(--dim);
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.02)
-    }
-
-    .privacy-note {
-      font-size: 0.92rem;
-      color: rgba(255, 255, 255, 0.62)
     }
 
     footer {
@@ -319,16 +304,18 @@
         grid-template-columns: 1fr;
         gap: 18px;
         height: auto;
-        /* allow main to size naturally on small screens */
       }
 
+      /* ADJUSTMENT FOR MOBILE: Swap image and content order */
+      /* Phone Box (Image) will now be first (order: 0) */
       .phone-box {
         position: static;
-        order: 2;
+        order: 0;
       }
 
+      /* Content will now be second (order: 2) */
       .content {
-        order: 0;
+        order: 2;
       }
 
       .content-inner {
@@ -353,10 +340,6 @@
       .phone-box img {
         max-width: 320px
       }
-
-      .privacy-grid {
-        grid-template-columns: 1fr
-      }
     }
 
     .promo-image {
@@ -372,12 +355,10 @@
   <div class="container">
     <header>
       <div class="brand">
-        <!-- Minimal header for this layout -->
       </div>
     </header>
 
     <main class="main" role="main">
-      <!-- IMAGE LEFT (sticky + centered) -->
       <aside class="phone-box" aria-hidden="true">
         <a href="https://play.google.com/store/apps/details?id=com.qlenapps.qlenfixautocare" target="_blank">
           <img src="Screenshot_20251125-123330.png" alt="Qlenfix app screenshot on phone" class="promo-image">
@@ -386,7 +367,6 @@
         <div>&copy; 2025 Qlenfix Autocare — Built for trust & clarity.</div>
       </aside>
 
-      <!-- CONTENT RIGHT (scrollable) -->
       <article class="content" aria-labelledby="features-title">
         <div class="content-inner">
           <div class="eyebrow">Modern diagnostics • Trusted insights</div>
@@ -394,10 +374,8 @@
           <p class="lead">Minimal, modern diagnostics that help you find issues faster, decide with confidence, and
             keep your vehicle performing at its best.</p>
 
-          <!-- Accordion container -->
           <div class="accordion-container">
 
-            <!-- FEATURES ACCORDION (default open) -->
             <div class="accordion open">
               <div class="accordion-header" onclick="toggleAccordion(this)">
                 <div>
@@ -459,7 +437,6 @@
               </div>
             </div>
 
-            <!-- PRIVACY ACCORDION -->
             <div class="accordion">
               <div class="accordion-header" onclick="toggleAccordion(this)">
                 <div>
@@ -522,14 +499,10 @@
             </div>
 
           </div>
-        </div> <!-- /.content-inner -->
+        </div>
       </article>
 
     </main>
-
-    <!-- <footer>
-      <div>&copy; 2025 Qlenfix Autocare — Built for trust & clarity.</div>
-    </footer> -->
   </div>
 
   <script>
@@ -543,9 +516,23 @@
       const willOpen = !content.classList.contains('open');
 
       if (willOpen) {
+        // Close all other accordions
+        document.querySelectorAll('.accordion').forEach(acc => {
+          if (acc !== accordion) {
+            acc.classList.remove('open');
+            acc.querySelector('.accordion-content').classList.remove('open');
+            // Check for the icon before manipulating its style
+            const otherIcon = acc.querySelector('i.fa-chevron-down');
+            if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+          }
+        });
+
+        // Open the current accordion
         content.classList.add('open');
         accordion.classList.add('open');
-        if (icon) icon.style.transform = 'rotate(180deg)';
+        if (icon) {
+          icon.style.transform = 'rotate(180deg)';
+        }
       } else {
         content.classList.remove('open');
         accordion.classList.remove('open');
